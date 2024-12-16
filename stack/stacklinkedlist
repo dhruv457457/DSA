@@ -1,0 +1,101 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+struct Node {
+    int data;
+    struct Node *next;
+};
+
+typedef struct Node Node;
+
+Node* creationstack(Node* tos) {
+    tos = NULL;
+    return tos;
+}
+
+int isempty(Node* st) {
+    return (st == NULL);
+}
+
+Node* push(Node* tos, int v) {
+    Node *ptr = (Node*)malloc(sizeof(Node));
+    if (!ptr) {
+        printf("Memory allocation failed\n");
+        return tos;
+    }
+    ptr->data = v;
+    ptr->next = tos;
+    tos = ptr;
+    return tos;
+}
+
+Node* pop(Node** tos) {
+    if (isempty(*tos)) {
+        printf("Stack is empty\n");
+        return *tos;
+    }
+    Node* ptr = *tos;
+    int t = ptr->data;
+    *tos = ptr->next;
+    free(ptr);
+    return *tos;
+}
+
+int topstack(Node* tops) {
+    if (isempty(tops)) {
+        printf("Stack is empty\n");
+        return -1; 
+    } else {
+        return tops->data;
+    }
+}
+
+void traverse(Node* tops) {
+    if (isempty(tops)) {
+        printf("Stack is empty\n");
+        return;
+    } else {
+        Node* ptr = tops;
+        while (ptr != NULL) {
+            printf("%d -> ", ptr->data);
+            ptr = ptr->next;
+        }
+        printf("NULL\n");
+    }
+}
+
+int main() {
+    Node* tos = creationstack(tos);
+    int num, ch;
+    
+    do {
+        printf("\nEnter your choice:\n1. Push\n2. Pop\n3. Show\n4. Top element\n0. Exit\n");
+        scanf("%d", &ch);
+        switch (ch) {
+            case 1:
+                printf("Enter your number: ");
+                scanf("%d", &num);
+                tos = push(tos, num);
+                break;
+            case 2:
+                tos = pop(&tos);
+                break;
+            case 3:
+                traverse(tos);
+                break;
+            case 4:
+                num = topstack(tos);
+                if (num != -1) {
+                    printf("Top element: %d\n", num);
+                }
+                break;
+            case 0:
+                exit(0);
+            default:
+                printf("Invalid input\n");
+                break;
+        }
+    } while (1);
+    
+    return 0;
+}
